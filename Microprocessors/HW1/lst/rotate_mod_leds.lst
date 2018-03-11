@@ -1,0 +1,131 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ; Filename:     leds_rotate.s
+    2 00000000         ; Author:       <Add Your Name here> 
+    3 00000000         ; Description:  
+    4 00000000         
+    5 00000000                 export           rotate_mod_leds
+    6 00000000         ;*******************************************************
+                       ************************* 
+    7 00000000         ; SRAM
+    8 00000000         ;*******************************************************
+                       ************************* 
+    9 00000000                 AREA             SRAM, READWRITE
+   10 00000000                 align
+   11 00000000         
+   12 00000000         ;*******************************************************
+                       ************************* 
+   13 00000000         ; Constant Variables (FLASH) Segment
+   14 00000000         ;*******************************************************
+                       ************************* 
+   15 00000000                 AREA             FLASH, CODE, READONLY
+   16 00000000                 align
+   17 00000000         
+   18 00000000         ;*******************************************************
+                       ************************* 
+   19 00000000         ; Passed in pointer to LED data on R0, and size of array
+                        on R1
+   20 00000000         ; Will rotate led data with led_array_data[0] <-- led_ar
+                       ray_data[size-1] and
+   21 00000000         ; led_array_data[1] <-- led_array_data[0], ...  Also mod
+                       ifies data as it 
+   22 00000000         ; rotates it adding 0x08 to red, and subtracting 0x08 fr
+                       om blue, while leaving
+   23 00000000         ; green content unchanged.
+   24 00000000         ;*******************************************************
+                       *************************
+   25 00000000         rotate_mod_leds
+                               PROC
+   26 00000000 F1A1 0201       SUB              R2, R1, #1  ; R2 contains array
+                                                            _size - 1, R1 was p
+                                                            assed array_size
+   27 00000004 EB00 0382       ADD              R3, R0, R2, LSL #2 ; R3 points 
+                                                            at last word in arr
+                                                            ay
+   28 00000008 6819            LDR              R1, [R3]    ; R1 = led_array_ad
+                                                            dr[array_size-1]
+   29 0000000A         rotate_mod_loop
+   30 0000000A F853 2C04       LDR              R2, [R3,#-4]
+   31 0000000E F502 62FF       ADD              R2, R2, #0x000007F8 ; green mai
+                                                            ntains, red increme
+                                                            nts, blue decrement
+                                                            s
+   32 00000012 F843 2904       STR              R2, [R3], #-4
+   33 00000016 4298            CMP              R0, R3      ; When R0 == R3 we 
+                                                            are done with all b
+                                                            ut last transfer
+   34 00000018 D1F7            BNE              rotate_mod_loop
+   35 0000001A 6019            STR              R1, [R3]    ; store the LED dat
+                                                            a that wraps around
+                                                            
+   36 0000001C         
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   37 0000001C 4770            BX               LR
+   38 0000001E                 ENDP
+   39 0000001E 00 00           align
+   40 00000020         
+   41 00000020         
+   42 00000020                 END
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\obj\rotate_mod_leds.d -o.\obj\rotate_mod_leds.o -IC:\Users\Er
+ic\Documents\ECE_Classes\ECE353\Spring17\HW\HW1_Keil\Student\RTE -IC:\Keil_v5\A
+RM\PACK\ARM\CMSIS\4.5.0\CMSIS\Include -IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.0.0
+\Device\Include\TM4C123 --predefine="__EVAL SETA 1" --predefine="__MICROLIB SET
+A 1" --predefine="__UVISION_VERSION SETA 520" --predefine="_RTE_ SETA 1" --pred
+efine="TM4C123GH6PM SETA 1" --list=.\lst\rotate_mod_leds.lst rotate_mod_leds.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+SRAM 00000000
+
+Symbol: SRAM
+   Definitions
+      At line 9 in file rotate_mod_leds.s
+   Uses
+      None
+Comment: SRAM unused
+1 symbol
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+FLASH 00000000
+
+Symbol: FLASH
+   Definitions
+      At line 15 in file rotate_mod_leds.s
+   Uses
+      None
+Comment: FLASH unused
+rotate_mod_leds 00000000
+
+Symbol: rotate_mod_leds
+   Definitions
+      At line 25 in file rotate_mod_leds.s
+   Uses
+      At line 5 in file rotate_mod_leds.s
+Comment: rotate_mod_leds used once
+rotate_mod_loop 0000000A
+
+Symbol: rotate_mod_loop
+   Definitions
+      At line 29 in file rotate_mod_leds.s
+   Uses
+      At line 34 in file rotate_mod_leds.s
+Comment: rotate_mod_loop used once
+3 symbols
+340 symbols in table

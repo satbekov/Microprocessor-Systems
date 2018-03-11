@@ -1,0 +1,204 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ; Filename:     leds_init.s
+    2 00000000         ; Author:       Kairat Satbekov 
+    3 00000000         ; Description:  
+    4 00000000                 import           hw1
+    5 00000000                 export           init_leds
+    6 00000000         ;*******************************************************
+                       ************************* 
+    7 00000000         ; SRAM
+    8 00000000         ;*******************************************************
+                       ************************* 
+    9 00000000                 AREA             SRAM, READWRITE
+   10 00000000                 align
+   11 00000000         
+   12 00000000         ;*******************************************************
+                       ************************* 
+   13 00000000         ; Constant Variables (FLASH) Segment
+   14 00000000         ;*******************************************************
+                       ************************* 
+   15 00000000                 AREA             FLASH, CODE, READONLY
+   16 00000000                 align
+   17 00000000         
+   18 00000000         ;*******************************************************
+                       ************************* 
+   19 00000000         ;*******************************************************
+                       ************************* 
+   20 00000000         ;******************************************************
+   21 00000000         ; Initializes led_array_addr so that each LED
+   22 00000000         ; has the following color codes:
+   23 00000000         ;
+   24 00000000         ; led_array_addr[0]= Green 50%, Red 0%, Blue 0%
+   25 00000000         ; led_array_addr[1]= Green 0%, Red 50%, Blue 0%
+   26 00000000         ; led_array_addr[2]= Green 0%, Red 0%, Blue 50%
+   27 00000000         ; led_array_addr[3]= Green 50%, Red 25%, Blue 0%
+   28 00000000         ; led_array_addr[4]= Green 0%, Red 50%, Blue 25%
+   29 00000000         ; led_array_addr[5]= Green 25%, Red 0%, Blue 50%
+   30 00000000         ; led_array_addr[6]= Green 25%, Red 25%, Blue 25%
+   31 00000000         ; led_array_addr[7]= Green 75%, Red 0%, Blue 75%
+   32 00000000         ;
+   33 00000000         ; parameter 0 address of LED array
+   34 00000000         ; parameter 1 address of UPDATE_LEDS variable
+   35 00000000         ;
+   36 00000000         ;******************************************************
+   37 00000000         ;; TODO -- Implement EABI compliant function init_leds
+   38 00000000         
+   39 00000000         init_leds
+                               PROC
+   40 00000000         ; save modified registers, in our case it's only R4 sinc
+                       e R0-R3 are handled by caller
+   41 00000000 B410            PUSH             {R4}
+   42 00000002         
+   43 00000002         ; initialize led_array_addr[0]
+   44 00000002 F04F 027F       MOV              R2, #0x7F
+   45 00000006 F04F 0300       MOV              R3, #0x0
+   46 0000000A F04F 0400       MOV              R4, #0x0
+   47 0000000E F800 2B01       STRB             R2, [R0], #1
+   48 00000012 F800 3B01       STRB             R3, [R0], #1
+   49 00000016 F800 4B01       STRB             R4, [R0], #1
+   50 0000001A         
+   51 0000001A         ; initialize led_array_addr[1] 
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   52 0000001A F04F 0200       MOV              R2, #0x0
+   53 0000001E F04F 037F       MOV              R3, #0x7F
+   54 00000022 F04F 0400       MOV              R4, #0x0
+   55 00000026 F800 2B01       STRB             R2, [R0], #1
+   56 0000002A F800 3B01       STRB             R3, [R0], #1
+   57 0000002E F800 4B01       STRB             R4, [R0], #1
+   58 00000032         
+   59 00000032         ; initialize led_array_addr[2]
+   60 00000032 F04F 0200       MOV              R2, #0x0
+   61 00000036 F04F 0300       MOV              R3, #0x0
+   62 0000003A F04F 047F       MOV              R4, #0x7F
+   63 0000003E F800 2B01       STRB             R2, [R0], #1
+   64 00000042 F800 3B01       STRB             R3, [R0], #1
+   65 00000046 F800 4B01       STRB             R4, [R0], #1
+   66 0000004A         
+   67 0000004A         ; initialize led_array_addr[3]
+   68 0000004A F04F 027F       MOV              R2, #0x7F
+   69 0000004E F04F 033F       MOV              R3, #0x3F
+   70 00000052 F04F 0400       MOV              R4, #0x0
+   71 00000056 F800 2B01       STRB             R2, [R0], #1
+   72 0000005A F800 3B01       STRB             R3, [R0], #1
+   73 0000005E F800 4B01       STRB             R4, [R0], #1
+   74 00000062         
+   75 00000062         ; initialize led_array_addr[4]
+   76 00000062 F04F 0200       MOV              R2, #0x0
+   77 00000066 F04F 037F       MOV              R3, #0x7F
+   78 0000006A F04F 043F       MOV              R4, #0x3F
+   79 0000006E F800 2B01       STRB             R2, [R0], #1
+   80 00000072 F800 3B01       STRB             R3, [R0], #1
+   81 00000076 F800 4B01       STRB             R4, [R0], #1
+   82 0000007A         
+   83 0000007A         ; initialize led_array_addr[5]
+   84 0000007A F04F 023F       MOV              R2, #0x3F
+   85 0000007E F04F 0300       MOV              R3, #0x0
+   86 00000082 F04F 047F       MOV              R4, #0x7F
+   87 00000086 F800 2B01       STRB             R2, [R0], #1
+   88 0000008A F800 3B01       STRB             R3, [R0], #1
+   89 0000008E F800 4B01       STRB             R4, [R0], #1
+   90 00000092         
+   91 00000092         ; initialize led_array_addr[6]
+   92 00000092 F04F 023F       MOV              R2, #0x3F
+   93 00000096 F04F 033F       MOV              R3, #0x3F
+   94 0000009A F04F 043F       MOV              R4, #0x3F
+   95 0000009E F800 2B01       STRB             R2, [R0], #1
+   96 000000A2 F800 3B01       STRB             R3, [R0], #1
+   97 000000A6 F800 4B01       STRB             R4, [R0], #1
+   98 000000AA         
+   99 000000AA         ; initialize led_array_addr[7]
+  100 000000AA F04F 02BF       MOV              R2, #0xBF
+  101 000000AE F04F 0300       MOV              R3, #0x0
+  102 000000B2 F04F 04BF       MOV              R4, #0xBF
+  103 000000B6 F800 2B01       STRB             R2, [R0], #1
+  104 000000BA F800 3B01       STRB             R3, [R0], #1
+  105 000000BE F800 4B01       STRB             R4, [R0], #1
+  106 000000C2         
+  107 000000C2         ; clear update_led_addr
+  108 000000C2 F04F 0400       MOV              R4, #0x00000000
+  109 000000C6 600C            STR              R4, [R1]
+  110 000000C8         
+
+
+
+ARM Macro Assembler    Page 3 
+
+
+  111 000000C8         ; restore modified registers
+  112 000000C8 BC10            POP              {R4}
+  113 000000CA         
+  114 000000CA         ; return from function
+  115 000000CA 4770            BX               LR
+  116 000000CC         
+  117 000000CC                 ENDP
+  118 000000CC                 END
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\obj\init_leds.d -o.\obj\init_leds.o -I.\RTE\_HW1 -IC:\Keil_v5
+\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include -IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1
+.0\Device\Include\TM4C123 --predefine="__MICROLIB SETA 1" --predefine="__UVISIO
+N_VERSION SETA 524" --predefine="_RTE_ SETA 1" --predefine="TM4C123GH6PM SETA 1
+" --list=.\lst\init_leds.lst init_leds.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+SRAM 00000000
+
+Symbol: SRAM
+   Definitions
+      At line 9 in file init_leds.s
+   Uses
+      None
+Comment: SRAM unused
+1 symbol
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+FLASH 00000000
+
+Symbol: FLASH
+   Definitions
+      At line 15 in file init_leds.s
+   Uses
+      None
+Comment: FLASH unused
+init_leds 00000000
+
+Symbol: init_leds
+   Definitions
+      At line 39 in file init_leds.s
+   Uses
+      At line 5 in file init_leds.s
+Comment: init_leds used once
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+hw1 00000000
+
+Symbol: hw1
+   Definitions
+      At line 4 in file init_leds.s
+   Uses
+      None
+Comment: hw1 unused
+1 symbol
+339 symbols in table
