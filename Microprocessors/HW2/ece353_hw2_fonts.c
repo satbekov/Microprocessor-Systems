@@ -1,4 +1,6 @@
+/*Author: Kairat Satbekov, ECE353 course staff*/
 #include "ece353_hw2_fonts.h"
+#include <stdlib.h>
 /// Hmmmm?  Do I need an include here of ///
 /// lcd.h to access stuff in lcd.c ?  ////
 
@@ -1721,7 +1723,6 @@ const uint8_t courierNewBitmap[] =
 	0x00, 0x00, //            
 };
 
-
 /**********************************************************
 * Function Name: lcd_print_character
 **********************************************************
@@ -1730,10 +1731,43 @@ const uint8_t courierNewBitmap[] =
 * pixel (X_pixel,Y_pixel).
 **********************************************************/
 void lcd_print_character(uint16_t X_pixel, uint16_t Y_pixel, uint16_t fg_color, uint16_t bg_color, char character) {
-	int offset;
-	offset = ((int)character - 32) * 32;
+	// cast the ASCII code of the character to correct integer-offset representation
+	int i, j;
+	uint16_t byte_index, bytes_per_row;
+	uint8_t data;
+  int characterOffset = 32;
+  int offset = ((int) character - 32) * characterOffset;
+	bytes_per_row = FONT_WIDTH / 8;
+  
+	if( (FONT_WIDTH % 8) != 0) {
+    bytes_per_row++;
+  }
+
+	// set the active area and draw the character by writing necessary data to lcd
 	lcd_set_pos(X_pixel, X_pixel + FONT_WIDTH - 1, Y_pixel, Y_pixel + FONT_HEIGHT - 1);
-	lcd_draw_image(X_pixel, FONT_WIDTH, Y_pixel, FONT_HEIGHT, &(courierNewBitmap[offset]), fg_color, bg_color);
+
+	// start from the last byte of the character
+	for(i = FONT_HEIGHT; i > 0; i--) {
+			for(j = 0; j < FONT_WIDTH; j++) {
+					if(j == 0) {
+							byte_index = (i*bytes_per_row)-1;
+							data = courierNewBitmap[byte_index+offset];
+							data = data >> 5;
+					}
+					if(j == 3) {
+							byte_index = (i*bytes_per_row)-2;
+							data = courierNewBitmap[byte_index+offset];
+					}
+					if(data & 0x01) {
+							lcd_write_data_u16(fg_color);
+					} else {
+							lcd_write_data_u16(bg_color);
+					}
+					// examine the next bit to write to lcd
+					data = data >> 1;
+			}
+	}
+	
 }
 
 /**********************************************************
@@ -1755,15 +1789,31 @@ void lcd_print_character(uint16_t X_pixel, uint16_t Y_pixel, uint16_t fg_color, 
 * the associated .h file that should be used.
 * Returns: Nothing
 **********************************************************/
-void lcd_print_stringXY(
-    char *msg, 
-    int8_t X,
-		int8_t Y,
-    uint16_t fg_color, 
-    uint16_t bg_color
+void lcd_print_stringXY(char *msg, int8_t X, int8_t Y, uint16_t fg_color, uint16_t bg_color) {
+	// get the size of the entire meesage
+	size_t msgLength = strlen(msg);
+	int i, xPixel, yPixel, currentX, currentY;
+	currentX = X;
+	currentY = Y;
+	// iterate over each character in the message and print it respectively to its X and Y coordinates
+	for(i = 0; i < msgLength; i++) {
+			if(currentX > CHAR_COLUMNS - 1) {
+					if(msg[i] == 32) {
+							i++;
+					}
+					// if doesn't fit in the row, increment the row, X stays the same
+					currentY += 1;
+					currentX = X;
+			}
+			if(currentY > CHAR_ROWS - 1) {
+					// if wraps, jump to row 0
+					currentY = 0;
+			}
+			// configure the appropriate X and Y coordinates for character to be printed
+			xPixel = X_PADDING + (currentX * FONT_WIDTH);
+			yPixel = (currentY * FONT_HEIGHT);
 		
-		
-)
-{
-
+			lcd_print_character(xPixel, yPixel, fg_color, bg_color, msg[i]);
+			currentX++;
+	}
 }

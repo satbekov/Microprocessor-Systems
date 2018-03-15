@@ -99,6 +99,23 @@ bool gp_timer_wait(uint32_t base_addr, uint32_t ticks)
   //*********************    
   // ADD CODE
   //*********************
+	
+	// stop timers A and B
+  gp_timer->CTL &= ~ (TIMER_CTL_TAEN | TIMER_CTL_TBEN); 
+	
+	// set the interval of Timer A
+	gp_timer->TAILR = ticks;
+	
+	// acknowledges (clears) a Timer A Time-Out
+	gp_timer->ICR = TIMER_ICR_TATOCINT;
+	
+	
+	// start timer A
+  gp_timer->CTL |= TIMER_CTL_TAEN;
+	
+	// busy wait until a Timer A Time-Out occurs 
+	while((gp_timer->RIS & TIMER_RIS_TATORIS) == 0){
+	}
   
   return true;
 }
@@ -148,7 +165,31 @@ bool gp_timer_config_32(uint32_t base_addr, uint32_t mode, bool count_up, bool e
   //*********************    
   // ADD CODE
   //*********************
-    
+	
+	// stop timers A and B
+  gp_timer->CTL &= ~ (TIMER_CTL_TAEN | TIMER_CTL_TBEN);
+		
+	// set the size of General Purpose Timer to be 32-bits wide.
+	gp_timer->CFG = TIMER_CFG_32_BIT_TIMER;
+	
+	// clear the mode bits, set the timer's mode 
+	gp_timer->TAMR &= ~(TIMER_TAMR_TAMR_M);    
+	gp_timer->TAMR |=  mode;                  
+
+	// set the direction of a General Purpose Timer based on the 'count_up' parameter
+	if(count_up) {
+			gp_timer->TAMR |= TIMER_TAMR_TACDIR;
+	} else {
+			gp_timer->TAMR &= ~(TIMER_TAMR_TACDIR);
+	}
+	
+	// enables or disables Timer A timeout interrupts based on the 'enable_interrupts' parameter 
+	if(enable_interrupts) {
+			gp_timer->IMR = TIMER_IMR_TATOIM; 
+	} else {
+			gp_timer->IMR &= ~TIMER_IMR_TATOIM;
+	} 
+	
     
   return true;  
 }

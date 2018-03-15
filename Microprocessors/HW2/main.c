@@ -1,3 +1,4 @@
+/*Author: Kairat Satbekov, ECE353 course staff*/
 // Copyright (c) 2015-16, Joe Krachey
 // All rights reserved.
 //
@@ -39,11 +40,12 @@ main(void)
   lcd_config_gpio();
 
     // Run validation code
-  /*if( validate_ice(ICE_GPIO_PORT) == false)
-  {
-    while(1){
-    };
-  }*/
+  //if( validate_ice(ICE_GPIO_PORT) == false)
+  //{
+    //while(1){
+    //};
+  //}
+	
   put_string("\n\r");
   put_string("************************************\n\r");
   put_string("ECE353 - Spring 2018 HW2\n\r  ");
@@ -54,11 +56,10 @@ main(void)
   
   lcd_config_screen();
   lcd_clear_screen(LCD_COLOR_BLACK);
-	lcd_print_character(200, 100, LCD_COLOR_BLUE, LCD_COLOR_GREEN, 'A');
   
- // lcd_print_stringXY(msg1,1,5,LCD_COLOR_YELLOW,LCD_COLOR_BLACK);
- // lcd_print_stringXY(msg2,14,8,LCD_COLOR_GREEN,LCD_COLOR_BLACK);
-//	lcd_print_stringXY(msg3,1,18,LCD_COLOR_YELLOW,LCD_COLOR_BROWN);
+  lcd_print_stringXY(msg1,1,5,LCD_COLOR_YELLOW,LCD_COLOR_BLACK);
+  lcd_print_stringXY(msg2,14,8,LCD_COLOR_GREEN,LCD_COLOR_BLACK);
+	lcd_print_stringXY(msg3,1,18,LCD_COLOR_YELLOW,LCD_COLOR_BROWN);
   
   // Reach infinite loop
   while(1){};

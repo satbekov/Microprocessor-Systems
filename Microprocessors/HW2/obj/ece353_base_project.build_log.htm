@@ -27,36 +27,25 @@ Project File Date:  01/04/2018
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Rebuild target 'ICE-11-GPIO'
-compiling ece353_hw2_fonts.c...
 compiling main.c...
-main.c(34): warning:  #177-D: variable "msg1"  was declared but never referenced
-    char msg1[] = "This is easy";
-main.c(35): warning:  #177-D: variable "msg2"  was declared but never referenced
-  	char msg2[] = "This is a little trickier";
-main.c(36): warning:  #177-D: variable "msg3"  was declared but never referenced
-    char msg3[] = "Krachey's HW2 was harder so don't complain!";
-main.c: 3 warnings, 0 errors
+compiling ece353_hw2_fonts.c...
 compiling gpio_port.c...
 ..\drivers\c\gpio_port.c(82): warning:  #188-D: enumerated type mixed with another type
          return 0;
-..\drivers\c\gpio_port.c(347): warning:  #177-D: variable "gpioPort"  was declared but never referenced
+..\drivers\c\gpio_port.c(383): warning:  #177-D: variable "gpioPort"  was declared but never referenced
     GPIOA_Type  *gpioPort;
-..\drivers\c\gpio_port.c(359): warning:  #177-D: variable "gpioPort"  was declared but never referenced
+..\drivers\c\gpio_port.c(397): warning:  #177-D: variable "gpioPort"  was declared but never referenced
     GPIOA_Type  *gpioPort;
-..\drivers\c\gpio_port.c(372): warning:  #177-D: variable "gpioPort"  was declared but never referenced
+..\drivers\c\gpio_port.c(424): warning:  #177-D: variable "gpioPort"  was declared but never referenced
     GPIOA_Type  *gpioPort;
-..\drivers\c\gpio_port.c(386): warning:  #177-D: variable "gpioPort"  was declared but never referenced
-    GPIOA_Type  *gpioPort;
-..\drivers\c\gpio_port.c(412): warning:  #177-D: variable "gpioPort"  was declared but never referenced
-    GPIOA_Type  *gpioPort;
-..\drivers\c\gpio_port.c: 6 warnings, 0 errors
+..\drivers\c\gpio_port.c: 4 warnings, 0 errors
 assembling startup_TM4C123.s...
 compiling lcd_images.c...
 compiling system_TM4C123.c...
 compiling lcd.c...
 linking...
-Program Size: Code=5524 RO-data=3784 RW-data=20 ZI-data=8196  
-".\obj\ece353_base_project.axf" - 0 Error(s), 9 Warning(s).
+Program Size: Code=5820 RO-data=3784 RW-data=20 ZI-data=8196  
+".\obj\ece353_base_project.axf" - 0 Error(s), 4 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -80,12 +69,12 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: Keil::Device:Startup:1.0.1
-      Source file:   Device\Source\system_TM4C123.c
-      Include file:  Device\Include\TM4C123\TM4C123.h
       Source file:   Device\Source\ARM\startup_TM4C123.s
+      Include file:  Device\Include\TM4C123\TM4C123.h
+      Source file:   Device\Source\system_TM4C123.c
 
    * Component: ARM::CMSIS:CORE:5.0.1
-Build Time Elapsed:  00:00:11
+Build Time Elapsed:  00:00:14
 </pre>
 </body>
 </html>
